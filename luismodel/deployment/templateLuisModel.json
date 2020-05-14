@@ -1,0 +1,77 @@
+{
+  "luis_schema_version": "4.0.0",
+  "versionId": "1",
+  "name": "frames",
+  "desc": "Frames in LUIS",
+  "culture": "en-us",
+  "tokenizerVersion": "1.0.0",
+  "intents": [
+    {
+      "name": "affirm"
+    },
+    {
+      "name": "confirm"
+    },
+    {
+      "name": "goodbye"
+    },
+    {
+      "name": "greeting"
+    },
+    {
+      "name": "inform"
+    },
+    {
+      "name": "moreinfo"
+    },
+    {
+      "name": "negate"
+    },
+    {
+      "name": "None"
+    },
+    {
+      "name": "request"
+    },
+    {
+      "name": "request_alts"
+    },
+    {
+      "name": "request_compare"
+    },
+    {
+      "name": "switch_frame"
+    },
+    {
+      "name": "thankyou"
+    }
+  ],
+  "entities": [],
+  "composites": [],
+  "closedLists": [],
+  "patternAnyEntities": [],
+  "regex_entities": [],
+  "prebuiltEntities": [
+    {
+      "name": "geographyV2",
+      "roles": ["origincity", "destinationcity"]
+    },
+    {
+      "name": "number",
+      "roles": ["children", "adults"]
+    },
+    {
+      "name": "money",
+      "roles": ["budget"]
+    },
+    {
+      "name": "datetimeV2",
+      "roles": ["start"]
+    }
+  ],
+  "model_features": [],
+  "regex_features": [],
+  "patterns": [],
+  "utterances": [],
+  "settings": []
+}

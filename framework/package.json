@@ -1,0 +1,53 @@
+{
+  "name": "",
+  "version": "0.0.0",
+  "description": "",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "files": [
+    "build/"
+  ],
+  "license": "Apache-2.0",
+  "keywords": [],
+  "scripts": {
+    "start": "tsc && node ./build/index.js",
+    "build": "tsc",
+    "test:overallIntent": "node ./build/index.js cicd --sample=30 --oracle=overallIntent --noise=0 --complexity=3 --threshold=85",
+    "test:overallIntent:noise:spellCheck": "node ./build/index.js cicd --sample=30 --oracle=overallIntent --noise=0.5 --complexity=3 --spellCheck --threshold=80 --spellCheck",
+    "test:allEntities": "node ./build/index.js cicd --sample=30 --oracle=allEntities --noise=0 --complexity=2 --threshold=35",
+    "test:allEntities:noise:spellCheck": "node ./build/index.js cicd --sample=30 --oracle=allEntities --noise=0.5 --spellCheck --complexity=2 --threshold=25",
+    "test:allEntities:failing": "node ./build/index.js cicd --sample=10 --oracle=allEntities --noise=1 --complexity=6 --threshold=100",
+    "test:specificEntity": "node ./build/index.js cicd --sample=30 --oracle=specificEntity --specificEntityId=3 --noise=0 --complexity=3 --threshold=35",
+    "example": "node ./build/index.js example",
+    "develop": "tsc-watch --onSuccess \"node ./build/index.js\"",
+    "fix": "eslint --fix **/*.ts"
+  },
+  "devDependencies": {
+    "@types/js-combinatorics": "^0.5.31",
+    "@types/jsonfile": "^5.0.0",
+    "@types/node": "^10.17.21",
+    "@types/yargs": "^15.0.4",
+    "@typescript-eslint/eslint-plugin": "^2.29.0",
+    "@typescript-eslint/parser": "^2.29.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "prettier": "^1.19.1",
+    "tsc-watch": "^4.2.3",
+    "typescript": "~3.7.0"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.3",
+    "@types/underscore": "^1.9.4",
+    "all-the-cities": "^3.1.0",
+    "axios": "^0.19.2",
+    "csv-writer": "^1.6.0",
+    "dotenv": "^8.2.0",
+    "js-combinatorics": "^0.5.5",
+    "jsonfile": "^6.0.1",
+    "rita": "^1.3.94",
+    "simple-spellchecker": "^1.0.0",
+    "underscore": "^1.10.2",
+    "yargs": "^15.3.1"
+  }
+}

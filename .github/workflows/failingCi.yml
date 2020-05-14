@@ -1,0 +1,58 @@
+name: LUIS Intent Recognition System Verification CI (always fails)
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: npm install
+        working-directory: ./framework
+        run: |
+          npm install
+
+      - name: tsc build
+        working-directory: ./framework
+        run: |
+          npm run build
+
+      - name: Test overall intent recognition performance
+        working-directory: ./framework
+        run: |
+          npm run test:overallIntent
+        env:
+          LUIS_QUERY_URL: ${{ secrets.LUIS_QUERY_URL }}
+
+      - name: Test all entity recognition performance with highest complexity and noise without spellcheck (guaranteed to fail)
+        working-directory: ./framework
+        run: |
+          npm run test:allEntities:failing
+        env:
+          LUIS_QUERY_URL: ${{ secrets.LUIS_QUERY_URL }}
+          BING_SPELL_CHECK_SUBSCRIPTION_KEY: ${{ secrets.BING_SPELL_CHECK_SUBSCRIPTION_KEY }}
+
+      - name: npm install
+        working-directory: ./luismodel
+        run: |
+          npm install
+
+      - name: Publish model to production
+        working-directory: ./luismodel
+        run: |
+          npm run publish
+        env:
+          LUIS_ENDPOINT: ${{ secrets.LUIS_ENDPOINT }}
+          LUIS_AUTHORING_KEY: ${{ secrets.LUIS_AUTHORING_KEY }}
