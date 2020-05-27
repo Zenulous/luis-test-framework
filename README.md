@@ -33,12 +33,11 @@ luismodel // Project to parse Frames dataset and send its utterances to a LUIS a
 
 In order to use the framework, a published LUIS app with Frames data is necessary. To this end, the `luismodel` project can be used to parse the Frames dataset to LUIS.
 
-1. In the LUIS portal, create a new LUIS app. Ensure that `Culture` is set to **English**. You can use a free starter key if desired. 
+1. In the LUIS portal, create a new LUIS app. Select `New app` (for conversation) and `Import as JSON`. You can use a free starter key if desired. Select the `templateLuisModel.json` file in `/luismodel/deployment`. Ensure the new version is active and that it is named `1.0`.
 
-2. Download and move `frames.json` into `/luismodel/data/frames`
+2. Download and move `frames.json` into `/luismodel/data/frames`. This folder contains a link to the Frames dataset if you have not downloaded it yet.
 
 3. Browse into `/luismodel`
-4.  In the LUIS portal in your created app, `Import version`, then select the `templateLuisModel.json` file in `/luismodel/deployment`. Ensure the new version is active and that it is named `1.0`. You can delete the default version which is unused.
 5. Create `.env` in the `/luismodel` folder and fill this in according to `.env.example`.  The app ID should be visible in the URL when browsing through the app in the LUIS portal. The subscription key can be found in `Manage > Application Settings > Azure Resources`. Ideally you should use an authoring key for this.
 6. Run `npm install`
 7. Run `npm run buildmodel`. This can take a while. You should see warnings about unimplemented dialogue acts: this is as intended. The app will be published in staging automatically. Once this program exits, you're ready to use the framework. Note: this may take a while to finish.
