@@ -6,8 +6,8 @@ This repo contains a proof of concept for automatically testing a LUIS IRS (inte
 
 If you only want to see some examples of how the CFG generates utterances, this is possible without an Azure / LUIS account. You only need:
 
-* Node.js installed (preferably a recent version, with npm)
-* A clone or download of the repository
+* Node.js installed (preferably a recent version, with npm).
+* A clone or download of the repository.
 
 If you want to conduct the framework and query LUIS using a model trained on the Frames dataset, in addition you need:
 
@@ -22,7 +22,7 @@ If you want to conduct the framework and query LUIS using a model trained on the
 .github
 └───workflows // CI/CD examples using Github Actions
 
-example_experiment_output // Example of an Experiment run using the framework, including an R script for further analysis. Note that the R script uses some modules you may have to manually install.
+example_experiment_output // Example of an experiment run using the framework, including an R script for further analysis. Note that the R script uses some modules you may have to manually install. The samples and output in this folder are identical to that of this project's manuscript,
 
 framework // Folder containing the PoC framework 
 
@@ -38,10 +38,10 @@ In order to use the framework, a published LUIS app with Frames data is necessar
 2. Download and move `frames.json` into `/luismodel/data/frames`
 
 3. Browse into `/luismodel`
-4.  In the LUIS portal in your created app, `Import version`, then select the `templateLuisModel.json` file in `/luismodel/deployment`. Ensure the new version is active. You can delete the default version which is unused.
+4.  In the LUIS portal in your created app, `Import version`, then select the `templateLuisModel.json` file in `/luismodel/deployment`. Ensure the new version is active and that it is named `1.0`. You can delete the default version which is unused.
 5. Create `.env` in the `/luismodel` folder and fill this in according to `.env.example`.  The app ID should be visible in the URL when browsing through the app in the LUIS portal. The subscription key can be found in `Manage > Application Settings > Azure Resources`. Ideally you should use an authoring key for this.
 6. Run `npm install`
-7. Run `npm run buildmodel`. This can take a while. You should see warnings about unimplemented dialogue acts: this is as intended. The app will be published in staging automatically. Once this program exits, you're ready to use the framework.
+7. Run `npm run buildmodel`. This can take a while. You should see warnings about unimplemented dialogue acts: this is as intended. The app will be published in staging automatically. Once this program exits, you're ready to use the framework. Note: this may take a while to finish.
 
 # Framework Usage
 
@@ -53,13 +53,13 @@ Before using the framework, browse into `/framework` . Then, do the following:
 2. Build the framework using `npm run build`. You only have to do this once. 
 3. Ensure that you create a `.env` file in the root of `/framework` which reflects `.env.example` if you are using the framework locally. This is not necessary if you only want to generate some example utterances using the CFG (see `CFG Example`). Note the `APP_ID` and `SUBSCRIPTION_KEY` parameters in the `LUIS_QUERY_URL` variable. If you are using a CI/CD provider such as GitHub actions, the secrets should be [stored in a safe way](https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets). `BING_SPELL_CHECK_SUBSCRIPTION_KEY` can be left empty if you do not have a Bing spell check resource, but in cases where spell check preprocessing is enabled it will have no effect. This subscription key can be found within the spell check resource in the Azure portal.
 
-You can start the framework by running `node ./build/index.js`. As the framework is a CLI program, help concerning the required parameters is included. Concrete examples are described below.
+You can start the framework by running `node ./build/index.js`. As the framework is a CLI program, **help concerning the required parameters is included in your terminal when running this command**. Concrete examples are described below.
 
 ## CI/CD
 
 This scenario can be used to automatically test the LUIS model. It is the pinnacle of the test framework as this command is very customizable: many parameters can be passed to change the test runs to your liking, such as sample size, utterance complexity and more (see `node ./build/index.js cicd`).
 
-This command but can be used with CI/CD providers. Included in this repository are two YML files compatible with GitHub Actions as a CI/CD provider as examples. These YML files automatically test a LUIS model using various test runs. If the model performs well enough, it is promoted from staging to production automatically. `ci.yml` is meant to succeed, whereas `failingCi.yml` will always fail to show that the framework can prevent an underperforming model from publication. You could run the framework as part of a testing pipeline before approving a model version for release, or run it routinely to monitor a production model's performance.
+This command but can be used with CI/CD providers. Included in this repository are two YML files compatible with GitHub Actions as a CI/CD provider as examples. These YML files automatically test a LUIS model using various test runs. If the model performs well enough, it is promoted from staging to production automatically. `ci.yml` is meant to succeed, whereas `failingCi.yml` will always fail to show that the framework can prevent an underperforming model from publication. You could run the framework as part of a testing pipeline before approving a model version for release, or run it routinely to monitor a production model's performance. An example of a successful run can be found [here](<https://github.com/Zenulous/luis-test-framework/actions/runs/104623259>).
 
 This command consumes LUIS, so make sure you do not set the sample sizes too large to prevent large costs.
 
@@ -73,4 +73,4 @@ Running `node ./build/index.js example` generates 10 example utterances. Both th
 
 This scenario can be used to recreate the experimental conditions from the thesis paper. 
 
-**WARNING** : this will use a **LOT** of LUIS consumption as the sample sizes are large: LUIS is queried tens of thousands of times to recreate the experiment. Unless you are aware of the consumption cost, do **NOT** run this command. For transparency, the samples and results generated by the experiment for the thesis paper can be found in the folder `/example_experiment_output`.
+**WARNING** : this will use a **LOT** of LUIS consumption as the sample sizes are large: LUIS is queried tens of thousands of times to recreate the experiment. The default LUIS query API is used to make the framework easier to generalize for other services. Unless you are aware of the consumption cost, do **NOT** run this command. For transparency, the samples and results generated by the experiment for the thesis paper can be found in the folder `/example_experiment_output`.

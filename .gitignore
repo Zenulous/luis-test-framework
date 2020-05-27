@@ -1,6 +1,5 @@
-.ipynb_checkpoints
 node_modules
-data
+frames.json
 build
 .env
 .rhistory
