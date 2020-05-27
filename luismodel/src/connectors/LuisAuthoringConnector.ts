@@ -1,5 +1,5 @@
 import {Turn} from "../models/Conversation";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 import {Entity} from "../models/Entity";
 
 export class LuisAuthoringConnector {
@@ -8,6 +8,20 @@ export class LuisAuthoringConnector {
   constructor(endpoint: string, authoringKey: string) {
     this.endpoint = endpoint;
     this.authoringKey = authoringKey;
+  }
+
+  async handleAxiosError(err: AxiosError) {
+    if (err.response && err.response.status === 401) {
+      throw Error(
+        "Request unauthenticated, LUIS connection strings may be invalid"
+      );
+    }
+    if (err.response && err.response.status === 429) {
+      console.log(`Waiting to avoid LUIS rate limiting`);
+      await new Promise(resolve => setTimeout(resolve, 10000));
+      return;
+    }
+    throw Error(`Unknown LUIS API error: ${err}`);
   }
 
   async postTurnsAsUtteranceExample(versionId: string, turns: Turn[]) {
@@ -23,12 +37,26 @@ export class LuisAuthoringConnector {
       const body = this.convertTurnIntoRequestBody(turn);
       batchBody.push(body);
       if (batchBody.length === 10) {
-        await axios.post(url, batchBody, options);
+        while (true) {
+          try {
+            await axios.post(url, batchBody, options);
+            break;
+          } catch (err) {
+            await this.handleAxiosError(err);
+          }
+        }
         batchBody = [];
       }
     }
     if (batchBody.length > 0) {
-      await axios.post(url, batchBody, options);
+      while (true) {
+        try {
+          await axios.post(url, batchBody, options);
+          break;
+        } catch (err) {
+          await this.handleAxiosError(err);
+        }
+      }
     }
   }
 
@@ -40,7 +68,14 @@ export class LuisAuthoringConnector {
     };
     const body = {sentimentAnalysis: false, speech: false, spellChecker: true};
     const url = this.endpoint + `/publishsettings`;
-    await axios.put(url, body, options);
+    while (true) {
+      try {
+        await axios.put(url, body, options);
+        break;
+      } catch (err) {
+        await this.handleAxiosError(err);
+      }
+    }
   }
 
   async publishVersionToStaging(versionId: string) {
@@ -51,7 +86,14 @@ export class LuisAuthoringConnector {
     };
     const body = {versionId, isStaging: true};
     const url = this.endpoint + `/publish`;
-    await axios.post(url, body, options);
+    while (true) {
+      try {
+        await axios.post(url, body, options);
+        break;
+      } catch (err) {
+        await this.handleAxiosError(err);
+      }
+    }
   }
 
   async trainApplication(versionId: string) {
@@ -62,7 +104,14 @@ export class LuisAuthoringConnector {
     };
     const url =
       this.endpoint + `/versions/${encodeURIComponent(versionId)}/train`;
-    await axios.post(url, {}, options);
+    while (true) {
+      try {
+        await axios.post(url, {}, options);
+        break;
+      } catch (err) {
+        await this.handleAxiosError(err);
+      }
+    }
   }
 
   private async getLatestStagingVersionId(): Promise<string | undefined> {
@@ -72,7 +121,13 @@ export class LuisAuthoringConnector {
       },
     };
     const url = this.endpoint;
-    return (await axios.get(url, options)).data.endpoints.STAGING.versionId;
+    while (true) {
+      try {
+        return (await axios.get(url, options)).data.endpoints.STAGING.versionId;
+      } catch (err) {
+        await this.handleAxiosError(err);
+      }
+    }
   }
 
   async publishLatestStagingModelToProduction() {
@@ -87,7 +142,14 @@ export class LuisAuthoringConnector {
       isStaging: false,
     };
     const url = this.endpoint + `/publish`;
-    await axios.post(url, body, options);
+    while (true) {
+      try {
+        await axios.post(url, body, options);
+        break;
+      } catch (err) {
+        await this.handleAxiosError(err);
+      }
+    }
   }
 
   private convertTurnIntoRequestBody(turn: Turn) {
