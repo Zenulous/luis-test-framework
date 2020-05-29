@@ -4,6 +4,10 @@ This repo contains a proof of concept for automatically testing a LUIS IRS (inte
 
 # Prerequisites
 
+Some familiarity with Node.js development and LUIS is assumed as the current state of the framework is very preliminary.
+This repository is not meant to be a first guide for these tools!
+To familiarize yourself with these technologies, [LUIS documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/luis/what-is-luis) and [Node.js tutorials](https://www.w3schools.com/nodejs/) are great places to start.
+
 If you only want to see some examples of how the CFG generates utterances, this is possible without an Azure / LUIS account. You only need:
 
 * Node.js installed (preferably a recent version, with npm).
