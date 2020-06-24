@@ -1,6 +1,8 @@
 name: LUIS Intent Recognition System Verification CI
 
 on:
+  repository_dispatch:
+    types: trigger-ci
   push:
     branches:
       - master
