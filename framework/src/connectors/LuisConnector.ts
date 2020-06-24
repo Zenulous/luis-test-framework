@@ -15,7 +15,7 @@ export class LuisConnector {
         "Request unauthenticated, LUIS connection strings may be invalid"
       );
     }
-    console.log(`Waiting to avoid LUIS rate limiting`);
+    console.log("Waiting to avoid LUIS rate limiting");
     await new Promise(resolve => setTimeout(resolve, 60000));
     return;
   }

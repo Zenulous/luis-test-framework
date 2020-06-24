@@ -17,7 +17,7 @@ export class LuisAuthoringConnector {
       );
     }
     if (err.response && err.response.status === 429) {
-      console.log(`Waiting to avoid LUIS rate limiting`);
+      console.log("Waiting to avoid LUIS rate limiting");
       await new Promise(resolve => setTimeout(resolve, 10000));
       return;
     }
@@ -67,7 +67,7 @@ export class LuisAuthoringConnector {
       },
     };
     const body = {sentimentAnalysis: false, speech: false, spellChecker: true};
-    const url = this.endpoint + `/publishsettings`;
+    const url = this.endpoint + "/publishsettings";
     while (true) {
       try {
         await axios.put(url, body, options);
@@ -85,7 +85,7 @@ export class LuisAuthoringConnector {
       },
     };
     const body = {versionId, isStaging: true};
-    const url = this.endpoint + `/publish`;
+    const url = this.endpoint + "/publish";
     while (true) {
       try {
         await axios.post(url, body, options);
@@ -141,7 +141,7 @@ export class LuisAuthoringConnector {
       versionId,
       isStaging: false,
     };
-    const url = this.endpoint + `/publish`;
+    const url = this.endpoint + "/publish";
     while (true) {
       try {
         await axios.post(url, body, options);
