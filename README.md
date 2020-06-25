@@ -1,6 +1,6 @@
 # LUIS Test Framework Proof of Concept
 
-This repo contains a proof of concept for automatically testing a LUIS IRS (intent recognition system) model. It consists of two components: component A uses a context free grammar (CFG) to expand grammar rules, resulting in the generation of utterances that can be used to test an IRS. Component B is capable of querying the IRS and asserting its performance. The framework can be used in multiple MLOps scenarios. For more details, please refer to the associated thesis paper which will be included in this repository soon.
+This repo contains a proof of concept for automatically testing a LUIS IRS (intent recognition system) model. It consists of two components: component A uses a context free grammar (CFG) to expand grammar rules, resulting in the generation of utterances that can be used to test an IRS. Component B is capable of querying the IRS and asserting its performance. The framework can be used in multiple MLOps scenarios. For more details, please refer to the associated thesis paper within the `thesis` folder.
 
 # Prerequisites
 
@@ -31,6 +31,8 @@ example_experiment_output // Example of an experiment run using the framework, i
 framework // Folder containing the PoC framework 
 
 luismodel // Project to parse Frames dataset and send its utterances to a LUIS app, also used by the CI/CD pipelines to promote a staging model to production
+
+thesis // Thesis related material can be found here, including the full thesis as a PDF file
 ```
 
 # Creation of the LUIS model
